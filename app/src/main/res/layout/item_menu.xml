@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="menuItem"
+            type="dev.arpan.food.menu.data.MenuItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp"
+            android:text="@{menuItem.categoryName}"
+            android:textAppearance="?textAppearanceHeadline6"
+            android:textColor="?android:attr/textColorPrimaryInverse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@tools:sample/full_names" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/iv_veg_non_veg"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:src="@{menuItem.isVeg ? @drawable/veg : @drawable/non_veg }"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/non_veg" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@{menuItem.name}"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_veg_non_veg"
+                app:layout_constraintEnd_toStartOf="@+id/layout_customization"
+                app:layout_constraintStart_toEndOf="@+id/iv_veg_non_veg"
+                app:layout_constraintTop_toTopOf="@+id/iv_veg_non_veg"
+                tools:text="@tools:sample/full_names" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{menuItem.description}"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_name"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tv_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_price"
+                tools:text="@tools:sample/full_names" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_customization"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <dev.arpan.food.menu.widget.StepperView
+                    android:id="@+id/layout_stepper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:count="@{menuItem.quantity}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--  <LinearLayout
+                      android:id="@+id/layout_stepper"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="16dp"
+                      android:background="@drawable/stepper_background"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent">
+
+                      <TextView
+                          android:id="@+id/button_remove"
+                          android:layout_width="24dp"
+                          android:layout_height="24dp"
+                          android:gravity="center"
+                          android:text="-"
+                          android:textColor="?colorPrimary"
+                          android:textSize="18sp" />
+
+
+                      <TextView
+                          android:id="@+id/tv_item_count"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:minWidth="32dp"
+                          android:text="10"
+                          android:textColor="?colorPrimary"
+                          android:textSize="18sp" />
+
+                      <TextView
+                          android:id="@+id/button_add"
+                          android:layout_width="24dp"
+                          android:layout_height="24dp"
+                          android:gravity="center"
+                          android:text="+"
+                          android:textColor="?colorPrimary"
+                          android:textSize="18sp" />
+
+                  </LinearLayout>-->
+
+                <TextView
+                    android:id="@+id/tv_customizable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Customizable"
+                    android:textAllCaps="true"
+                    android:textColor="?colorPrimary"
+                    android:textSize="8sp"
+                    android:visibility="@{menuItem.isCustomizationAvailable ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_stepper" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`$`+ menuItem.price}"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="$10.00" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?dividerHorizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>
