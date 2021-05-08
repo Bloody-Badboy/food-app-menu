@@ -48,11 +48,27 @@
             app:behavior_hideable="true"
             app:behavior_skipCollapsed="true"
             app:cardElevation="16dp"
-            app:layout_behavior="@string/bottom_sheet_behavior">
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            tools:visibility="gone">
 
             <include
                 android:id="@+id/sheet"
                 layout="@layout/include_menu_customization" />
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_checkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Goo"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:icon="@drawable/ic_shopping_cart"
+            app:iconTint="@color/white"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+            tools:visibility="visible" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

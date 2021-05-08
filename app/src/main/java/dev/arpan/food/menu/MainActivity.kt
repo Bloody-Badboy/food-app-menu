@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,6 +20,7 @@ import dev.arpan.food.menu.data.MenuItem
 import dev.arpan.food.menu.data.YesNoBooleanAdapter
 import dev.arpan.food.menu.databinding.ActivityMainBinding
 import dev.arpan.food.menu.utils.JumpSmoothScroller
+import dev.arpan.food.menu.utils.Utils
 import okio.Buffer
 
 class MainActivity : AppCompatActivity() {
@@ -147,14 +149,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateItemQuantity(item: MenuItem, addItem: Boolean) {
+        if (addItem) {
+            item.quantity++
+            item.isAddedToCart = true
+        } else {
+            item.quantity--
+            if (item.quantity == 0) {
+                item.isAddedToCart = false
+            }
+        }
+        updateMenuItem(item)
+    }
+
+    private fun updateMenuItem(item: MenuItem) {
         val index = menuItems.indexOfFirst { it.id == item.id }
         if (index >= 0) {
-            if (addItem) {
-                menuItems[index].quantity++
-            } else {
-                menuItems[index].quantity--
-            }
+            menuItems[index] = item
             menuItemAdapter.notifyItemChanged(index)
+            calculateCartPrice()
+        }
+    }
+
+    private fun calculateCartPrice() {
+        var cartValue = 0f
+        menuItems.filter { it.isAddedToCart }.forEach {
+            cartValue += it.totalPrice
+        }
+        if (cartValue > 0f) {
+            binding.fabCheckout.isVisible = true
+            binding.fabCheckout.text = "Checkout ${Utils.formatDecimalPoint(cartValue)}"
+        } else {
+            binding.fabCheckout.isVisible = false
         }
     }
 
@@ -170,22 +195,22 @@ class MainActivity : AppCompatActivity() {
             tvCustomizationSubTitle.text = "Customize you ${menuItem.name}"
 
             rv.adapter = SubMenuCategoryAdapter(menuItem) {
-                buttonAddToCart.text = "ADD $${menuItem.totalPrice}"
+                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
             }
 
-            buttonAddToCart.text = "ADD $${menuItem.totalPrice}"
+            buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
 
             tvCount.text = menuItem.quantity.toString()
 
             buttonAdd.setOnClickListener {
                 menuItem.quantity++
                 tvCount.text = menuItem.quantity.toString()
-                buttonAddToCart.text = "ADD $${menuItem.totalPrice}"
+                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
             }
             buttonRemove.setOnClickListener {
                 menuItem.quantity--
                 tvCount.text = menuItem.quantity.toString()
-                buttonAddToCart.text = "ADD $${menuItem.totalPrice}"
+                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
 
                 if (menuItem.quantity == 0) {
                     menuItem.isAddedToCart = false
@@ -199,24 +224,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomSheetBehavior.removeBottomSheetCallback(this)
-                    if (!menuItem.isAddedToCart) {
-                        menuItem.reset()
-                    }
-                    val index = menuItems.indexOfFirst { it.id == menuItem.id }
-                    if (index >= 0) {
-                        menuItems[index] = menuItem
-                        menuItemAdapter.notifyItemChanged(index)
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        bottomSheetBehavior.removeBottomSheetCallback(this)
+                        if (!menuItem.isAddedToCart) {
+                            menuItem.reset()
+                        }
+                        updateMenuItem(menuItem)
                     }
                 }
-            }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-        })
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+            })
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
