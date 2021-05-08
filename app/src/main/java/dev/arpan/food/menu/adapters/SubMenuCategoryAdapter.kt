@@ -2,6 +2,7 @@ package dev.arpan.food.menu.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import dev.arpan.food.menu.data.MenuItem
 import dev.arpan.food.menu.data.SubMenuCategory
@@ -45,6 +46,7 @@ class SubMenuCategoryViewHolder private constructor(val binding: ItemSubMenuCate
     fun bind(categoryName: SubMenuCategory, menuItem: MenuItem, onMenuItemUpdated: () -> Unit) {
         binding.tvTitle.text = categoryName.categoryName
         binding.tvDesc.text = categoryName.description
+        binding.divider.isVisible = adapterPosition != 0
 
         when (categoryName.sCategoryType.toLowerCase(Locale.ROOT)) {
             "selection" -> {
