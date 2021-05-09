@@ -26,7 +26,9 @@ class MultipleChoiceListAdapter(private val listener: (positions: List<Int>) -> 
         set(value) {
             field = value
             value.forEachIndexed { index, subMenuItem ->
-                selections.put(index, subMenuItem.isSelected)
+                if (subMenuItem.isSelected) {
+                    selections.put(index, true)
+                }
             }
             notifyDataSetChanged()
         }

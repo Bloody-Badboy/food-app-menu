@@ -172,14 +172,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun calculateCartPrice() {
         var cartValue = 0f
+        var cartItemCount = 0
+
         menuItems.filter { it.isAddedToCart }.forEach {
+            cartItemCount += it.quantity
             cartValue += it.totalPrice
         }
-        if (cartValue > 0f) {
-            binding.fabCheckout.isVisible = true
-            binding.fabCheckout.text = "Checkout ${Utils.formatDecimalPoint(cartValue)}"
-        } else {
-            binding.fabCheckout.isVisible = false
+
+        binding.apply {
+            if (cartValue > 0f) {
+                layoutViewCart.isVisible = true
+                viewCart.tvCartItems.text = resources.getQuantityString(
+                    R.plurals.item_quantity,
+                    cartItemCount,
+                    cartItemCount
+                )
+                viewCart.tvPrice.text = "$${Utils.formatDecimalPoint(cartValue)}"
+            } else {
+                layoutViewCart.isVisible = false
+            }
         }
     }
 

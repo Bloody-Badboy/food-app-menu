@@ -14,6 +14,8 @@
 
         <item name="fontFamily">@font/google_sans</item>
         <!-- Customize your theme here. -->
+        <item name="tagStrokeColor">#FFA000</item>
+        <item name="tagBackgroundColor">#1AFFA000</item>
     </style>
 
 </resources>

@@ -26,14 +26,20 @@ class StepperView @JvmOverloads constructor(
             field = value
             binding.apply {
                 tvCount.text = value.toString()
-                if (value >= 1) {
+                if (value > 0) {
                     tvCount.visibility = VISIBLE
                     buttonRemove.visibility = VISIBLE
                     tvAdd.visibility = GONE
+
+                    setOnClickListener(null)
                 } else {
                     tvCount.visibility = GONE
                     buttonRemove.visibility = GONE
                     tvAdd.visibility = VISIBLE
+
+                    setOnClickListener {
+                        onAdd?.invoke()
+                    }
                 }
             }
         }
@@ -44,6 +50,11 @@ class StepperView @JvmOverloads constructor(
     init {
 
         binding.apply {
+
+            setOnClickListener {
+                onAdd?.invoke()
+            }
+
             buttonAdd.setOnClickListener {
                 onAdd?.invoke()
             }

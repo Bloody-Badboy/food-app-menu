@@ -3,4 +3,7 @@
     <declare-styleable name="StepperView">
         <attr name="sv_textSize" format="dimension" />
     </declare-styleable>
+
+    <attr name="tagStrokeColor" format="color|reference" />
+    <attr name="tagBackgroundColor" format="color|reference" />
 </resources>

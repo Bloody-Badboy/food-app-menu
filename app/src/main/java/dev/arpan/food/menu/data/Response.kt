@@ -125,6 +125,18 @@ data class MenuItem(
 
     var isAddedToCart: Boolean = false
 
+    val tags: List<String>
+        get() {
+            val list = mutableListOf<String>()
+            if (isBestSeller) {
+                list.add("Bestseller")
+            }
+            if (isB1G1Applicable) {
+                list.add("Buy 1 Get 1")
+            }
+            return list
+        }
+
     fun reset() {
         quantity = 0
         finalPrice = price

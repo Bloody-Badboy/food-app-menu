@@ -29,7 +29,7 @@
             android:textColor="?android:attr/textColorPrimaryInverse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="@tools:sample/full_names" />
+            tools:text="@tools:sample/lorem" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -60,12 +60,13 @@
                 app:layout_constraintEnd_toStartOf="@+id/layout_customization"
                 app:layout_constraintStart_toEndOf="@+id/iv_veg_non_veg"
                 app:layout_constraintTop_toTopOf="@+id/iv_veg_non_veg"
-                tools:text="@tools:sample/full_names" />
+                tools:text="@tools:sample/lorem" />
 
             <TextView
                 android:id="@+id/tv_desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{menuItem.description}"
                 android:textColor="?android:attr/textColorSecondary"
@@ -96,49 +97,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!--  <LinearLayout
-                      android:id="@+id/layout_stepper"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="16dp"
-                      android:background="@drawable/stepper_background"
-                      android:gravity="center"
-                      android:orientation="horizontal"
-                      app:layout_constraintEnd_toEndOf="parent"
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent">
-
-                      <TextView
-                          android:id="@+id/button_remove"
-                          android:layout_width="24dp"
-                          android:layout_height="24dp"
-                          android:gravity="center"
-                          android:text="-"
-                          android:textColor="?colorPrimary"
-                          android:textSize="18sp" />
-
-
-                      <TextView
-                          android:id="@+id/tv_item_count"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:gravity="center"
-                          android:minWidth="32dp"
-                          android:text="10"
-                          android:textColor="?colorPrimary"
-                          android:textSize="18sp" />
-
-                      <TextView
-                          android:id="@+id/button_add"
-                          android:layout_width="24dp"
-                          android:layout_height="24dp"
-                          android:gravity="center"
-                          android:text="+"
-                          android:textColor="?colorPrimary"
-                          android:textSize="18sp" />
-
-                  </LinearLayout>-->
-
                 <TextView
                     android:id="@+id/tv_customizable"
                     android:layout_width="wrap_content"
@@ -166,6 +124,20 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name"
                 tools:text="$10.00" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_price"
+                app:layout_constraintStart_toEndOf="@id/tv_price"
+                app:layout_constraintTop_toTopOf="@id/tv_price"
+                app:tags="@{menuItem.tags}"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_tag" />
 
             <View
                 android:layout_width="0dp"
