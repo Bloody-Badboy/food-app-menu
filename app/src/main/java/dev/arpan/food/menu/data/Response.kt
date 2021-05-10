@@ -125,6 +125,8 @@ data class MenuItem(
 
     var isAddedToCart: Boolean = false
 
+    var isExpanded: Boolean = false
+
     val tags: List<String>
         get() {
             val list = mutableListOf<String>()

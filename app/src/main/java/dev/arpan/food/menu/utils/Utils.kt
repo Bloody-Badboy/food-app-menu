@@ -1,6 +1,7 @@
 package dev.arpan.food.menu.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import dev.arpan.food.menu.R
@@ -25,3 +26,6 @@ fun Context.getThemeColorAttribute(@AttrRes resId: Int): Int {
 
 val Context.themePrimaryColor: Int
     get() = getThemeColorAttribute(R.attr.colorPrimary)
+
+val Int.dp get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+val Int.px get() = (this / Resources.getSystem().displayMetrics.density).toInt()

@@ -57,21 +57,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/layout_customization"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorSurface"
-            app:behavior_hideable="true"
-            app:behavior_skipCollapsed="true"
-            app:cardElevation="16dp"
-            app:layout_behavior="@string/bottom_sheet_behavior"
-            tools:visibility="gone">
-
-            <include
-                android:id="@+id/sheet"
-                layout="@layout/include_menu_customization" />
-        </com.google.android.material.card.MaterialCardView>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

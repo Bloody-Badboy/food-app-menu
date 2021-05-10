@@ -1,14 +1,11 @@
 package dev.arpan.food.menu
 
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -19,6 +16,7 @@ import dev.arpan.food.menu.data.MenuCategory
 import dev.arpan.food.menu.data.MenuItem
 import dev.arpan.food.menu.data.YesNoBooleanAdapter
 import dev.arpan.food.menu.databinding.ActivityMainBinding
+import dev.arpan.food.menu.databinding.DialogMenuCustomizationBinding
 import dev.arpan.food.menu.utils.JumpSmoothScroller
 import dev.arpan.food.menu.utils.Utils
 import okio.Buffer
@@ -32,8 +30,6 @@ class MainActivity : AppCompatActivity() {
     private var categories: List<String> = emptyList()
     private var menuItems: MutableList<MenuItem> = mutableListOf()
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,13 +38,6 @@ class MainActivity : AppCompatActivity() {
 
         initMenuData()
         initAdapter()
-
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.layoutCustomization)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-        binding.sheet.ibClose.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        }
     }
 
     private fun initMenuData() {
@@ -200,67 +189,49 @@ class MainActivity : AppCompatActivity() {
             menuItem.quantity = 1
         }
 
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(
+            DialogMenuCustomizationBinding.inflate(layoutInflater).apply {
+                tvCustomizationSubTitle.text = "Customize you ${menuItem.name}"
 
-        binding.sheet.apply {
-            tvCustomizationSubTitle.text = "Customize you ${menuItem.name}"
-
-            rv.adapter = SubMenuCategoryAdapter(menuItem) {
-                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
-            }
-
-            buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
-
-            tvCount.text = menuItem.quantity.toString()
-
-            buttonAdd.setOnClickListener {
-                menuItem.quantity++
-                tvCount.text = menuItem.quantity.toString()
-                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
-            }
-            buttonRemove.setOnClickListener {
-                menuItem.quantity--
-                tvCount.text = menuItem.quantity.toString()
-                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
-
-                if (menuItem.quantity == 0) {
-                    menuItem.isAddedToCart = false
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                rv.adapter = SubMenuCategoryAdapter(menuItem) {
+                    buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
                 }
-            }
-            buttonAddToCart.setOnClickListener {
-                menuItem.isAddedToCart = true
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            }
-        }
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                        bottomSheetBehavior.removeBottomSheetCallback(this)
-                        if (!menuItem.isAddedToCart) {
-                            menuItem.reset()
-                        }
-                        updateMenuItem(menuItem)
+                buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
+
+                tvCount.text = menuItem.quantity.toString()
+
+                buttonAdd.setOnClickListener {
+                    menuItem.quantity++
+                    tvCount.text = menuItem.quantity.toString()
+                    buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
+                }
+                buttonRemove.setOnClickListener {
+                    menuItem.quantity--
+                    tvCount.text = menuItem.quantity.toString()
+                    buttonAddToCart.text = "ADD $${Utils.formatDecimalPoint(menuItem.totalPrice)}"
+
+                    if (menuItem.quantity == 0) {
+                        menuItem.isAddedToCart = false
+                        dialog.dismiss()
                     }
                 }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                buttonAddToCart.setOnClickListener {
+                    menuItem.isAddedToCart = true
+                    dialog.dismiss()
                 }
-            })
-    }
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                val outRect = Rect()
-                binding.sheet.root.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                ibClose.setOnClickListener {
+                    dialog.dismiss()
                 }
+            }.root
+        )
+        dialog.setOnDismissListener {
+            if (!menuItem.isAddedToCart) {
+                menuItem.reset()
             }
+            updateMenuItem(menuItem)
         }
-        return super.dispatchTouchEvent(event)
+        dialog.show()
     }
 }
