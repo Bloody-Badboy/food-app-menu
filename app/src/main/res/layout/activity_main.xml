@@ -38,22 +38,22 @@
                 tools:itemCount="5"
                 tools:listitem="@layout/item_menu" />
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/layout_view_cart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:padding="16dp"
+                android:orientation="vertical"
                 android:visibility="gone"
-                app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="visible">
 
                 <include
                     android:id="@+id/view_cart"
                     layout="@layout/include_cart" />
-            </FrameLayout>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

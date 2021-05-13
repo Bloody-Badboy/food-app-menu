@@ -71,14 +71,14 @@ class MainActivity : AppCompatActivity() {
         val indexer = MenuCategoryIndexer(categories, menuItems)
         val itemsScroller = JumpSmoothScroller(this)
 
-        var handleUserCategoryClick = false
+        var fromUserClick = false
         val categoryIndicatorAdapter = MenuCategoryIndicatorAdapter { category ->
             val position = indexer.positionForCategory(category)
             itemsScroller.targetPosition = position
             (binding.rv.layoutManager as LinearLayoutManager).startSmoothScroll(itemsScroller)
             binding.rvCategoryIndicator.smoothScrollToPosition(categories.indexOf(category))
 
-            handleUserCategoryClick = true
+            fromUserClick = true
         }.apply {
             data = categories
         }
@@ -111,12 +111,12 @@ class MainActivity : AppCompatActivity() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (handleUserCategoryClick) handleUserCategoryClick = false
+                    if (fromUserClick) fromUserClick = false
                 }
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (handleUserCategoryClick) return
+                if (fromUserClick) return
 
                 val first =
                     (binding.rv.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
@@ -162,10 +162,26 @@ class MainActivity : AppCompatActivity() {
     private fun calculateCartPrice() {
         var cartValue = 0f
         var cartItemCount = 0
+        var discountAmount = 0f
 
-        menuItems.filter { it.isAddedToCart }.forEach {
+        val cartItems = menuItems.filter { it.isAddedToCart }
+        cartItems.forEach {
             cartItemCount += it.quantity
             cartValue += it.totalPrice
+        }
+
+        val b1g1Items = cartItems.filter { it.isB1G1Applicable }.sortedBy { it.finalPrice }
+        val discountItemCount = b1g1Items.sumBy { it.quantity }
+
+        if (discountItemCount >= 2) {
+            val item = b1g1Items[0]
+            discountAmount += item.finalPrice
+        }
+
+        if (discountItemCount >= 4) {
+            // if first item's quantity is four or more the list size would be 1
+            val item = if (b1g1Items.size >= 2) b1g1Items[1] else b1g1Items[0]
+            discountAmount += item.finalPrice
         }
 
         binding.apply {
@@ -176,7 +192,26 @@ class MainActivity : AppCompatActivity() {
                     cartItemCount,
                     cartItemCount
                 )
-                viewCart.tvPrice.text = "$${Utils.formatDecimalPoint(cartValue)}"
+
+                val finalPrice = cartValue - discountAmount
+
+                viewCart.tvFinalPrice.text = "$${Utils.formatDecimalPoint(finalPrice)}"
+                viewCart.tvTotalPrice.text = "$${Utils.formatDecimalPoint(cartValue)}"
+
+                viewCart.tvB1g1DiscountInfo.isVisible = discountItemCount > 0
+                viewCart.tvTotalPrice.isVisible = discountItemCount >= 2
+
+                when {
+                    discountItemCount == 1 -> {
+                        viewCart.tvB1g1DiscountInfo.text = getString(R.string.b1g1_not_applied)
+                    }
+                    discountItemCount == 2 || discountItemCount == 3 -> {
+                        viewCart.tvB1g1DiscountInfo.text = getString(R.string.b1g1_applied_one_item)
+                    }
+                    discountAmount >= 4 -> {
+                        viewCart.tvB1g1DiscountInfo.text = getString(R.string.b1g1_applied_two_item)
+                    }
+                }
             } else {
                 layoutViewCart.isVisible = false
             }

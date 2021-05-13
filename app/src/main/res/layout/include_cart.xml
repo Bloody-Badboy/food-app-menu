@@ -3,72 +3,107 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardBackgroundColor="?attr/colorPrimary"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="2dp">
+    <merge
+        android:orientation="vertical"
+        tools:parentTag="android.widget.LinearLayout">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/tv_b1g1_discount_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:gravity="center"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="4dp"
+            android:textColor="?android:attr/textColorPrimaryInverse"
+            android:textSize="12sp"
+            tools:text="Well Done! One item in your cart is now free." />
 
-            <TextView
-                android:id="@+id/tv_cart_items"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:textColor="?android:attr/textColorPrimaryInverse"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="2 ITEMS" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="?attr/colorPrimary"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="12dp"
-                android:textAllCaps="true"
-                android:textColor="?android:attr/textColorPrimaryInverse"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cart_items"
-                tools:text="$10.00" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_label_taxes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="plus taxes"
-                android:textColor="?android:attr/textColorPrimaryInverse"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_price"
-                app:layout_constraintStart_toEndOf="@+id/tv_price"
-                app:layout_constraintTop_toTopOf="@+id/tv_price" />
+                <TextView
+                    android:id="@+id/tv_cart_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="2 ITEMS" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="View Cart"
-                android:textColor="?android:attr/textColorPrimaryInverse"
-                android:textSize="16sp"
-                app:drawableEndCompat="@drawable/ic_arrow_right"
-                app:drawableTint="?android:attr/textColorPrimaryInverse"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tv_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textAllCaps="true"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:strikeThrough="@{true}"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_final_price"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_final_price"
+                    tools:text="$10.00" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tv_final_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:textAllCaps="true"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_total_price"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cart_items"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="$10.00" />
+
+                <TextView
+                    android:id="@+id/tv_label_taxes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="plus taxes"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_final_price"
+                    app:layout_constraintStart_toEndOf="@+id/tv_final_price"
+                    app:layout_constraintTop_toTopOf="@+id/tv_final_price" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="View Cart"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right"
+                    app:drawableTint="?android:attr/textColorPrimaryInverse"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </merge>
 </layout>

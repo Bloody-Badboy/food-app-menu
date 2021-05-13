@@ -5,4 +5,8 @@
         <item quantity="one">%d ITEM</item>
         <item quantity="other">%d ITEMS</item>
     </plurals>
+
+    <string name="b1g1_not_applied">You can add a maximum of three more Buy One Get One items to your cart.</string>
+    <string name="b1g1_applied_one_item">Well Done! One item in your cart is now free.\nYou can still add two more Buy One Get One items to your cart.</string>
+    <string name="b1g1_applied_two_item">Well Done! Two items in your cart is now free.</string>
 </resources>

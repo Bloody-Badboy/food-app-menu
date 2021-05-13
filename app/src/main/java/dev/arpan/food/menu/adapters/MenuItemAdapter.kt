@@ -120,7 +120,7 @@ class CategoryItemViewHolder private constructor(val binding: ItemMenuBinding) :
 
             if (item.isExpanded) {
                 end.applyTo(constraintLayout)
-            }else{
+            } else {
                 start.applyTo(constraintLayout)
             }
 
