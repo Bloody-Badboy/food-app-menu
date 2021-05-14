@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.arpan.food.menu.R
 import dev.arpan.food.menu.data.MenuItem
 import dev.arpan.food.menu.databinding.ItemMenuBinding
-import dev.arpan.food.menu.utils.dp
+import dev.arpan.food.menu.utils.executeAfter
 
 class MenuItemAdapter(
     private val onAddClick: (MenuItem) -> Unit,
@@ -35,10 +35,10 @@ class MenuItemAdapter(
             true
         }
         holder.bind(isFirstItemOfCategory, item)
-        holder.binding.layoutStepper.onAdd = {
+        holder.binding.content.layoutStepper.onAdd = {
             onAddClick.invoke(item)
         }
-        holder.binding.layoutStepper.onRemove = {
+        holder.binding.content.layoutStepper.onRemove = {
             onRemoveClick.invoke(item)
         }
     }
@@ -65,48 +65,11 @@ class CategoryItemViewHolder private constructor(val binding: ItemMenuBinding) :
         TransitionInflater.from(itemView.context).inflateTransition(R.transition.item_menu)
 
     private val start = ConstraintSet().apply {
-        clone(binding.constraintLayout)
-
-        clear(R.id.iv_dish_image, ConstraintSet.START)
-        connect(
-            R.id.iv_dish_image,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END,
-            16.dp
-        )
-        constrainWidth(R.id.iv_dish_image, 96.dp)
-        constrainHeight(R.id.iv_dish_image, 96.dp)
-
-        connect(
-            R.id.iv_veg_non_veg,
-            ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP,
-            16.dp
-        )
+        clone(binding.content.constraintLayout)
     }
 
     private val end = ConstraintSet().apply {
-        clone(binding.constraintLayout)
-
-        connect(
-            R.id.iv_dish_image,
-            ConstraintSet.START,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.START,
-            16.dp
-        )
-        constrainWidth(R.id.iv_dish_image, ConstraintSet.MATCH_CONSTRAINT)
-        constrainHeight(R.id.iv_dish_image, 200.dp)
-
-        connect(
-            R.id.iv_veg_non_veg,
-            ConstraintSet.TOP,
-            R.id.iv_dish_image,
-            ConstraintSet.BOTTOM,
-            16.dp
-        )
+        clone(itemView.context, R.layout.include_menu_item_content_alt)
     }
 
     fun bind(
@@ -114,24 +77,30 @@ class CategoryItemViewHolder private constructor(val binding: ItemMenuBinding) :
         item: MenuItem
     ) {
         binding.apply {
-            menuItem = item
-            executePendingBindings()
+
             tvCategory.isVisible = isFirstItemOfCategory
 
             if (item.isExpanded) {
-                end.applyTo(constraintLayout)
+                end.applyTo(binding.content.constraintLayout)
             } else {
-                start.applyTo(constraintLayout)
+                start.applyTo(binding.content.constraintLayout)
             }
 
-            ivDishImage.setOnClickListener {
+            executeAfter {
+                menuItem = item
+            }
+
+            binding.content.ivDishImage.setOnClickListener {
                 TransitionManager.beginDelayedTransition(itemView.parent as ViewGroup, transition)
                 if (item.isExpanded) {
-                    start.applyTo(constraintLayout)
+                    start.applyTo(binding.content.constraintLayout)
                 } else {
-                    end.applyTo(constraintLayout)
+                    end.applyTo(binding.content.constraintLayout)
                 }
                 item.isExpanded = !item.isExpanded
+                executeAfter {
+                    menuItem = item
+                }
             }
         }
     }

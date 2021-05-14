@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.annotation.AttrRes
+import androidx.databinding.ViewDataBinding
 import dev.arpan.food.menu.R
 import java.text.DecimalFormat
 
@@ -29,3 +30,8 @@ val Context.themePrimaryColor: Int
 
 val Int.dp get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 val Int.px get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+
+fun ViewDataBinding.executeAfter(block: () -> Unit) {
+    block()
+    executePendingBindings()
+}

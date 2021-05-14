@@ -3,6 +3,7 @@ package dev.arpan.food.menu.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import dev.arpan.food.menu.databinding.ItemMenuCategoryIndicatorBinding
 import kotlin.properties.Delegates
 
@@ -61,7 +62,9 @@ class CategoryViewHolder private constructor(val binding: ItemMenuCategoryIndica
     }
 
     fun bind(categoryName: String, selected: Boolean) {
-        binding.tvCategory.isSelected = selected
-        binding.tvCategory.text = categoryName
+        (itemView as Chip).apply {
+            isChecked = selected
+            text = categoryName
+        }
     }
 }
