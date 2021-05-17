@@ -55,12 +55,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="#EEEEEE"
-        android:scaleType="centerCrop"
-        android:src="@drawable/dish"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="#EEEEEE"
+        tools:src="@drawable/dish" />
 
 
     <dev.arpan.food.menu.widget.StepperView

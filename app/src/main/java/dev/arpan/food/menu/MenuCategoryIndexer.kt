@@ -2,7 +2,7 @@ package dev.arpan.food.menu
 
 import dev.arpan.food.menu.data.MenuItem
 
-class MenuCategoryIndexer(private val categories: List<String>, items: List<MenuItem>) {
+class MenuCategoryIndexer(val categories: List<String>, items: List<MenuItem>) {
 
     private val startPositions: List<Int>
 

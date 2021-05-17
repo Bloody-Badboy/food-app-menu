@@ -20,6 +20,7 @@
             tools:text="Well Done! One item in your cart is now free." />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
