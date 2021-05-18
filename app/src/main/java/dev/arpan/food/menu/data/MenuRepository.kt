@@ -33,7 +33,7 @@ class MenuRepository private constructor(private val application: Application) {
 
     suspend fun getMenuMenuCategory(): List<MenuCategory> {
         return withContext(Dispatchers.IO) {
-            delay(2500L)
+            delay(3000L)
             runCatching {
                 val buffer = Buffer().readFrom(application.assets.open("menu.json"))
                 val reader = JsonReader.of(buffer)
@@ -41,5 +41,4 @@ class MenuRepository private constructor(private val application: Application) {
             }
         }.getOrThrow()
     }
-
 }

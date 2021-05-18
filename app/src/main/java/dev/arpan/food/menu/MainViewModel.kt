@@ -142,7 +142,6 @@ class MainViewModel(private val repository: MenuRepository = MenuRepository.getI
                 menuState = currentState.menuState,
                 cartState = cartState
             )
-
         }
     }
 }

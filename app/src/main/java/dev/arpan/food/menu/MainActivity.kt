@@ -170,7 +170,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
     private fun showCustomizationSheet(menuItem: MenuItem) {
 
         if (menuItem.quantity == 0) {
